@@ -1,0 +1,65 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #080c14;
+  --bg2:       #0d1220;
+  --bg3:       #121929;
+  --border:    #1c2840;
+  --border2:   #243354;
+  --text:      #dde4f0;
+  --text2:     #7a8aaa;
+  --text3:     #4a5570;
+  --accent:    #3b82f6;
+  --accent2:   #1d4ed8;
+  --p1:        #22c55e;
+  --p2:        #84cc16;
+  --p3:        #f59e0b;
+  --p4:        #ef4444;
+  --font-head: 'Bebas Neue', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --radius:    12px;
+  --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+html {
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  width: 100%;
+  display: block !important;
+  place-items: unset !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: block;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
+  70%  { transform: scale(1);    box-shadow: 0 0 0 12px rgba(59,130,246,0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
