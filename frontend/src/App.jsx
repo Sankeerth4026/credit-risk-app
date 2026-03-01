@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer, PieCha
 import { Upload, User, Activity, AlertCircle, ChevronRight, Loader2, Download, FileSpreadsheet, TrendingUp } from 'lucide-react'
 import styles from './App.module.css'
 
-const API = '/api'
+const API = 'https://credit-risk-app-x0cz.onrender.com'
 
 const RISK = {
   P1: { label: 'Very Low Risk',  color: '#22c55e', bg: 'rgba(34,197,94,0.08)',   border: 'rgba(34,197,94,0.25)'  },
