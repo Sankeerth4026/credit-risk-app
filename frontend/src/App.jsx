@@ -107,7 +107,7 @@ function SingleTab({ schema }) {
       {!schema && (
         <div className={styles.noSchema}>
           <AlertCircle size={18} />
-          <span>Feature schema not found. Run <code>train_model.py</code> first.</span>
+          <span>Wait!! the model to load..... </span>
         </div>
       )}
 
@@ -238,7 +238,7 @@ function BatchTab({ schema }) {
                 <BarChart data={distData} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
                   <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 14, fontFamily: 'Outfit', fontWeight: 600 }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} />
-                  <Tooltip contentStyle={{ background: '#0d1220', border: '1px solid #1c2840', borderRadius: 10, fontFamily: 'Outfit', fontSize: 13, color: '#dde4f0' }} cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
+                  <Tooltip contentStyle={{ background: '#0d1220', border: '1px solid #1c2840', borderRadius: 10, fontFamily: 'Outfit', fontSize: 13, color: '#dde4f0' }}labelStyle={{ color: "#94a3b8", fontWeight: 600 }} itemStyle={{ color: "#dde4f0" }} cursor={{ fill: 'rgba(255, 255, 255, 0)' }} />
                   <Bar dataKey="count" radius={[8, 8, 0, 0]} maxBarSize={90}>
                     {distData.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
                   </Bar>
@@ -253,7 +253,7 @@ function BatchTab({ schema }) {
                   <Pie data={distData} dataKey="count" nameKey="name" cx="50%" cy="45%" outerRadius={95} innerRadius={52} paddingAngle={3}>
                     {distData.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
                   </Pie>
-                  <Tooltip contentStyle={{ background: '#0d1220', border: '1px solid #1c2840', borderRadius: 10, fontFamily: 'Outfit', fontSize: 13, color: '#dde4f0' }} />
+                  <Tooltip contentStyle={{ background: '#0d1220', border: '1px solid #1c2840', borderRadius: 10, fontFamily: 'Outfit', fontSize: 13, color: '#dde4f0' }}labelStyle={{ color: "#94a3b8", fontWeight: 600 }} itemStyle={{ color: "#dde4f0" }} />
                   <Legend formatter={value => <span style={{ color: '#94a3b8', fontFamily: 'Outfit', fontSize: 13 }}>{value}</span>} />
                 </PieChart>
               </ResponsiveContainer>
