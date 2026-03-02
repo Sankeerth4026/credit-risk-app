@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer, PieCha
 import { Upload, User, Activity, AlertCircle, ChevronRight, Loader2, Download, FileSpreadsheet, TrendingUp } from 'lucide-react'
 import styles from './App.module.css'
 
-const API = '/api'
+const API = 'https://credit-risk-app-x0cz.onrender.com'
 
 const RISK = {
   P1: { label: 'Very Low Risk',  color: '#22c55e', bg: 'rgba(34,197,94,0.08)',   border: 'rgba(34,197,94,0.25)'  },
@@ -13,7 +13,6 @@ const RISK = {
   P4: { label: 'High Risk',      color: '#ef4444', bg: 'rgba(239,68,68,0.08)',   border: 'rgba(239,68,68,0.25)'  },
 }
 
-// ── Custom Tooltip ─────────────────────────────────────────────────────────────
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload || !payload.length) return null
   return (
@@ -35,7 +34,6 @@ function CustomTooltip({ active, payload, label }) {
   )
 }
 
-// ── Risk Card ──────────────────────────────────────────────────────────────────
 function RiskCard({ result }) {
   const meta = RISK[result.risk_code]
   const probData = Object.entries(result.probabilities).map(([code, val]) => ({
@@ -75,7 +73,6 @@ function RiskCard({ result }) {
   )
 }
 
-// ── Loading Screen ─────────────────────────────────────────────────────────────
 function LoadingScreen() {
   return (
     <div className={styles.loadingScreen}>
@@ -86,7 +83,7 @@ function LoadingScreen() {
   )
 }
 
-// ── Single Tab ─────────────────────────────────────────────────────────────────
+
 function SingleTab({ schema }) {
   const [values, setValues]   = useState({})
   const [loading, setLoading] = useState(false)
@@ -167,7 +164,6 @@ function SingleTab({ schema }) {
   )
 }
 
-// ── Batch Tab ──────────────────────────────────────────────────────────────────
 function BatchTab({ schema }) {
   const [dragging, setDragging] = useState(false)
   const [file, setFile]         = useState(null)
@@ -215,7 +211,7 @@ function BatchTab({ schema }) {
   return (
     <div className={styles.batchLayout}>
 
-      {/* Upload row */}
+
       <div className={styles.uploadRow}>
         <div
           className={`${styles.dropzone} ${dragging ? styles.dropzoneActive : ''} ${file ? styles.dropzoneFilled : ''}`}
@@ -255,11 +251,9 @@ function BatchTab({ schema }) {
         </div>
       </div>
 
-      {/* Results */}
+     
       {result && (
         <div className={styles.batchResults}>
-
-          {/* Metrics */}
           <div className={styles.metricsRow}>
             <div className={styles.metricCard} style={{ borderColor: '#3b82f6' }}>
               <div className={styles.metricVal} style={{ color: '#3b82f6' }}>{result.total.toLocaleString()}</div>
@@ -275,7 +269,6 @@ function BatchTab({ schema }) {
             ))}
           </div>
 
-          {/* Charts */}
           <div className={styles.chartSection}>
             <div className={styles.chartBox}>
               <div className={styles.chartTitle}>Risk Distribution — Bar Chart</div>
@@ -305,7 +298,6 @@ function BatchTab({ schema }) {
             </div>
           </div>
 
-          {/* Table */}
           <div className={styles.tableSection}>
             <div className={styles.tableTitleRow}>
               <div className={styles.chartTitle}>Results Preview</div>
@@ -345,7 +337,6 @@ function BatchTab({ schema }) {
   )
 }
 
-// ── App ────────────────────────────────────────────────────────────────────────
 export default function App() {
   const [tab, setTab]           = useState('single')
   const [schema, setSchema]     = useState(null)
