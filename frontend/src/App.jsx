@@ -107,7 +107,7 @@ function SingleTab({ schema }) {
       {!schema && (
         <div className={styles.noSchema}>
           <AlertCircle size={18} />
-          <span>Wait !The model to loading..... </span>
+          <span>Wait !The model is loading..... </span>
         </div>
       )}
 
