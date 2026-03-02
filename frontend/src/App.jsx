@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer, PieCha
 import { Upload, User, Activity, AlertCircle, ChevronRight, Loader2, Download, FileSpreadsheet, TrendingUp } from 'lucide-react'
 import styles from './App.module.css'
 
-const API = 'https://credit-risk-app-x0cz.onrender.com'
+const API = '/api'
 
 const RISK = {
   P1: { label: 'Very Low Risk',  color: '#22c55e', bg: 'rgba(34,197,94,0.08)',   border: 'rgba(34,197,94,0.25)'  },
@@ -13,6 +13,29 @@ const RISK = {
   P4: { label: 'High Risk',      color: '#ef4444', bg: 'rgba(239,68,68,0.08)',   border: 'rgba(239,68,68,0.25)'  },
 }
 
+// ── Custom Tooltip ─────────────────────────────────────────────────────────────
+function CustomTooltip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null
+  return (
+    <div style={{
+      background: '#0d1220',
+      border: '1px solid #1c2840',
+      borderRadius: 10,
+      padding: '10px 16px',
+      fontFamily: 'Outfit, sans-serif',
+      fontSize: 13,
+    }}>
+      <div style={{ color: '#94a3b8', fontWeight: 600, marginBottom: 4 }}>{label}</div>
+      {payload.map((p, i) => (
+        <div key={i} style={{ color: '#dde4f0' }}>
+          {p.name}: <strong style={{ color: p.fill ?? p.color ?? '#dde4f0' }}>{p.value}</strong>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ── Risk Card ──────────────────────────────────────────────────────────────────
 function RiskCard({ result }) {
   const meta = RISK[result.risk_code]
   const probData = Object.entries(result.probabilities).map(([code, val]) => ({
@@ -52,6 +75,18 @@ function RiskCard({ result }) {
   )
 }
 
+// ── Loading Screen ─────────────────────────────────────────────────────────────
+function LoadingScreen() {
+  return (
+    <div className={styles.loadingScreen}>
+      <Loader2 size={36} className={styles.spinnerIcon} color="#3b82f6" />
+      <div className={styles.loadingTitle}>Loading Model</div>
+      <div className={styles.loadingDesc}>Please wait while the backend initialises…</div>
+    </div>
+  )
+}
+
+// ── Single Tab ─────────────────────────────────────────────────────────────────
 function SingleTab({ schema }) {
   const [values, setValues]   = useState({})
   const [loading, setLoading] = useState(false)
@@ -107,7 +142,7 @@ function SingleTab({ schema }) {
       {!schema && (
         <div className={styles.noSchema}>
           <AlertCircle size={18} />
-          <span>Wait !The model is loading..... </span>
+          <span>Feature schema not found. Run <code>train_model.py</code> first.</span>
         </div>
       )}
 
@@ -122,7 +157,9 @@ function SingleTab({ schema }) {
 
       {result && (
         <div className={styles.resultFull}>
-          <div className={styles.sectionLabel}><TrendingUp size={14} style={{ display: 'inline', marginRight: 6 }} />Prediction Result</div>
+          <div className={styles.sectionLabel}>
+            <TrendingUp size={14} style={{ display: 'inline', marginRight: 6 }} />Prediction Result
+          </div>
           <RiskCard result={result} />
         </div>
       )}
@@ -130,6 +167,7 @@ function SingleTab({ schema }) {
   )
 }
 
+// ── Batch Tab ──────────────────────────────────────────────────────────────────
 function BatchTab({ schema }) {
   const [dragging, setDragging] = useState(false)
   const [file, setFile]         = useState(null)
@@ -149,7 +187,8 @@ function BatchTab({ schema }) {
     try {
       const { data } = await axios.post(`${API}/predict/batch`, form, { headers: { 'Content-Type': 'multipart/form-data' } })
       setResult(data)
-    } catch (e) { setError(e.response?.data?.detail ?? 'Batch prediction failed.')
+    } catch (e) {
+      setError(e.response?.data?.detail ?? 'Batch prediction failed.')
     } finally { setLoading(false) }
   }
 
@@ -176,6 +215,7 @@ function BatchTab({ schema }) {
   return (
     <div className={styles.batchLayout}>
 
+      {/* Upload row */}
       <div className={styles.uploadRow}>
         <div
           className={`${styles.dropzone} ${dragging ? styles.dropzoneActive : ''} ${file ? styles.dropzoneFilled : ''}`}
@@ -214,8 +254,12 @@ function BatchTab({ schema }) {
           {error && <div className={styles.errorBox}><AlertCircle size={16} /> {error}</div>}
         </div>
       </div>
+
+      {/* Results */}
       {result && (
         <div className={styles.batchResults}>
+
+          {/* Metrics */}
           <div className={styles.metricsRow}>
             <div className={styles.metricCard} style={{ borderColor: '#3b82f6' }}>
               <div className={styles.metricVal} style={{ color: '#3b82f6' }}>{result.total.toLocaleString()}</div>
@@ -231,6 +275,7 @@ function BatchTab({ schema }) {
             ))}
           </div>
 
+          {/* Charts */}
           <div className={styles.chartSection}>
             <div className={styles.chartBox}>
               <div className={styles.chartTitle}>Risk Distribution — Bar Chart</div>
@@ -238,10 +283,10 @@ function BatchTab({ schema }) {
                 <BarChart data={distData} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
                   <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 14, fontFamily: 'Outfit', fontWeight: 600 }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} />
-                  <Tooltip contentStyle={{ background: '#0d1220', border: '1px solid #1c2840', borderRadius: 10, fontFamily: 'Outfit', fontSize: 13, color: '#dde4f0' }}labelStyle={{ color: "#94a3b8", fontWeight: 600 }} itemStyle={{ color: "#dde4f0" }} cursor={{ fill: 'rgba(255, 255, 255, 0)' }} />
                   <Bar dataKey="count" radius={[8, 8, 0, 0]} maxBarSize={90}>
                     {distData.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
                   </Bar>
+                  <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.03)" }} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -253,12 +298,14 @@ function BatchTab({ schema }) {
                   <Pie data={distData} dataKey="count" nameKey="name" cx="50%" cy="45%" outerRadius={95} innerRadius={52} paddingAngle={3}>
                     {distData.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
                   </Pie>
-                  <Tooltip contentStyle={{ background: '#0d1220', border: '1px solid #1c2840', borderRadius: 10, fontFamily: 'Outfit', fontSize: 13, color: '#dde4f0' }}labelStyle={{ color: "#94a3b8", fontWeight: 600 }} itemStyle={{ color: "#dde4f0" }} />
+                  <Tooltip content={<CustomTooltip />} />
                   <Legend formatter={value => <span style={{ color: '#94a3b8', fontFamily: 'Outfit', fontSize: 13 }}>{value}</span>} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
           </div>
+
+          {/* Table */}
           <div className={styles.tableSection}>
             <div className={styles.tableTitleRow}>
               <div className={styles.chartTitle}>Results Preview</div>
@@ -297,15 +344,35 @@ function BatchTab({ schema }) {
     </div>
   )
 }
+
+// ── App ────────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [tab, setTab]         = useState('single')
-  const [schema, setSchema]   = useState(null)
-  const [modelOk, setModelOk] = useState(null)
+  const [tab, setTab]           = useState('single')
+  const [schema, setSchema]     = useState(null)
+  const [modelOk, setModelOk]   = useState(null)
+  const [connecting, setConnecting] = useState(true)
 
   useEffect(() => {
-    axios.get(`${API}/health`).then(({ data }) => setModelOk(data.model_loaded)).catch(() => setModelOk(false))
-    axios.get(`${API}/schema`).then(({ data }) => setSchema(data)).catch(() => {})
+    const checkBackend = async () => {
+      try {
+        const { data } = await axios.get(`${API}/health`)
+        setModelOk(data.model_loaded)
+      } catch {
+        setModelOk(false)
+      }
+
+      try {
+        const { data } = await axios.get(`${API}/schema`)
+        setSchema(data)
+      } catch {}
+
+      setConnecting(false)
+    }
+
+    checkBackend()
   }, [])
+
+  if (connecting) return <LoadingScreen />
 
   return (
     <div className={styles.app}>
@@ -319,11 +386,11 @@ export default function App() {
           </div>
           <div className={styles.statusRow}>
             <span className={styles.statusDot} style={{
-              background: modelOk === true ? '#22c55e' : modelOk === false ? '#ef4444' : '#334155',
+              background: modelOk === true ? '#22c55e' : '#ef4444',
               animation: modelOk === true ? 'pulse-ring 2s infinite' : 'none'
             }} />
-            <span className={styles.statusTxt} style={{ color: modelOk === false ? '#ef4444' : '#7a8aaa' }}>
-              {modelOk === true ? 'Model Ready' : modelOk === false ? 'Model Offline' : 'Connecting…'}
+            <span className={styles.statusTxt} style={{ color: modelOk === true ? '#7a8aaa' : '#ef4444' }}>
+              {modelOk === true ? 'Model Ready' : 'Model Offline'}
             </span>
           </div>
         </div>

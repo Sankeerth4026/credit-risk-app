@@ -1,4 +1,3 @@
-/* ── Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 .app { min-height: 100vh; position: relative; overflow-x: hidden; }
@@ -12,7 +11,6 @@
   pointer-events: none; z-index: 0;
 }
 
-/* ── Header ── */
 .header {
   position: sticky; top: 0; z-index: 100;
   background: rgba(8,12,20,0.9);
@@ -34,7 +32,7 @@
 .statusDot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 .statusTxt { font-size: 0.82rem; font-weight: 500; font-family: 'Outfit', sans-serif; }
 
-/* ── Hero ── */
+
 .hero {
   padding: 48px 40px 32px;
   position: relative; z-index: 1;
@@ -56,13 +54,13 @@
   font-weight: 300; font-family: 'Outfit', sans-serif;
 }
 
-/* ── Container ── */
+
 .container {
   padding: 0 40px 80px;
   position: relative; z-index: 1;
 }
 
-/* ── Tabs ── */
+
 .tabs { display: flex; gap: 4px; margin-bottom: 0; }
 .tab {
   display: flex; align-items: center; gap: 7px;
@@ -81,7 +79,7 @@
   font-weight: 600 !important;
 }
 
-/* ── Panel ── */
+
 .panel {
   background: #111827;
   border: 1px solid #1e2d50;
@@ -90,7 +88,7 @@
   min-height: 400px;
 }
 
-/* ── Section label ── */
+
 .sectionLabel {
   font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
   color: #3b82f6; font-weight: 700; font-family: 'Outfit', sans-serif;
@@ -99,7 +97,7 @@
   display: flex; align-items: center;
 }
 
-/* ── Single layout ── */
+
 .singleLayout { display: flex; flex-direction: column; gap: 0; }
 
 .formGrid {
@@ -143,7 +141,7 @@
 
 .resultFull { margin-top: 32px; }
 
-/* ── Risk card ── */
+
 .riskCard { border-radius: 14px; padding: 28px 32px; }
 .riskCardInner {
   display: flex; justify-content: space-between; align-items: flex-start;
@@ -169,7 +167,7 @@
 .probBar { height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; }
 .probFill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
 
-/* ── Batch layout ── */
+
 .batchLayout { display: flex; flex-direction: column; gap: 32px; }
 
 .uploadRow {
@@ -205,7 +203,7 @@
 }
 .templateBtn:hover { color: #3b82f6; border-color: #3b82f6; }
 
-/* ── Batch results ── */
+
 .batchResults { display: flex; flex-direction: column; gap: 28px; }
 
 .metricsRow {
@@ -231,7 +229,7 @@
   color: #4a5570; margin-top: 6px; font-family: 'Outfit', sans-serif;
 }
 
-/* ── Charts ── */
+
 .chartSection {
   display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
 }
@@ -247,7 +245,6 @@
   margin-bottom: 16px;
 }
 
-/* ── Table ── */
 .tableSection { background: #0d1220; border: 1px solid #1c2840; border-radius: 14px; overflow: hidden; }
 .tableTitleRow {
   display: flex; justify-content: space-between; align-items: center;
@@ -280,6 +277,8 @@
   font-size: 0.82rem; cursor: pointer; transition: all 0.18s;
 }
 .downloadBtn:hover { color: #3b82f6; border-color: #3b82f6; }
+
+
 .emptyResult {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 14px; min-height: 220px; text-align: center;
@@ -301,3 +300,27 @@
   margin-bottom: 12px; font-family: 'Outfit', sans-serif;
 }
 .noSchema code { font-family: monospace; font-size: 0.82rem; }
+
+
+.loadingScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 16px;
+  background: #080c14;
+}
+
+.loadingTitle {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 0.08em;
+  color: #dde4f0;
+}
+
+.loadingDesc {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: #4a5570;
+}
