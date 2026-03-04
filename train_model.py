@@ -1,12 +1,3 @@
-"""
-train_model.py
-Run this ONCE from the 'bank loan' root folder:
-    python train_model.py
-
-Saves model files into:
-    bank loan/model/credit_risk_pipeline.pkl
-    bank loan/model/feature_schema.json
-"""
 
 import pandas as pd
 import numpy as np
